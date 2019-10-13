@@ -87,7 +87,7 @@ print("Models loaded...")
 
 def predict(image_path):
     result0 = evaluate(image_path)
-    result0 = result0[0]
+    result0 = result0[0][:len(result0[0])-1]
     result = " ".join(result0)
     return result
 
