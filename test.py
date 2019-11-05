@@ -8,6 +8,7 @@ from glob import glob
 from PIL import Image
 import tensorflow as tf
 import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
 from models import *
 
 
@@ -83,7 +84,9 @@ image_features_extract_model = tf.keras.models.load_model(img_feat,compile=False
 print("Models loaded...")
 
 
-
+def show_image(img):
+    img_plt = plt.imshow(img)
+    plt.show()
 
 def predict(image_path):
     result0 = evaluate(image_path)
