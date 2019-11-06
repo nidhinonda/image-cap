@@ -11,7 +11,10 @@ app = Flask(__name__)
 def req():
     print("Requesting...")
     # get image
-    image_file = request.files['image']
+    if 'image' in request.files:
+        image_file = request.files['image']
+    if 'query' in request.files:
+        query = request.files['query']
     filename = werkzeug.utils.secure_filename(image_file.filename)
     image_file.save(filename)
 
