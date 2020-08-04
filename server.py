@@ -45,6 +45,7 @@ def home():
 
 
 def make_query_decisions(query,img,filename):
+    query = query.strip()
     if check_messages_in(["caption this", "caption"],query) == True:
         # Generate Caption
         print("Captioning...") 
