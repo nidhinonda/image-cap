@@ -59,7 +59,7 @@ def make_query_decisions(query,img,filename):
     else: 
         # make a call to the VQA App
         files = {'image_file': open(filename, 'rb')}
-        res = requests.post(VQA_APP_PORT + VQA_APP_URL + "/predict", files = files, data = {"question": query} )
+        res = requests.post(VQA_APP_URL + VQA_APP_PORT + "/predict", files = files, data = {"question": query} )
         if res.text != "":
             return res.text
         else:
