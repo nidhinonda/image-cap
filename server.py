@@ -47,19 +47,23 @@ def home():
 def make_query_decisions(query,img,filename):
     if check_messages_in(["caption this", "caption"],query) == True:
         # Generate Caption
+        print("Captioning...") 
         res = predict(filename)
         return res
     
     elif check_messages_in(["read","read this"],query) == True:
         # generate text
+        print("Text Recognition...")
         res = get_text(cv2.imread(filename))
         print(res)
         return " ".join(res.split('\n'))
 
     else: 
         # make a call to the VQA App
+        print("Executing VQA Task")
         files = {'image_file': open(filename, 'rb')}
         res = requests.post(VQA_APP_URL + ":" + VQA_APP_PORT + "/predict", files = files, data = {"question": query} )
+        print("Response:",res.status_code, res, res.text)
         if res.text != "":
             return res.text
         else:
