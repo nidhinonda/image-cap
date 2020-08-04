@@ -6,8 +6,14 @@ import base64
 import numpy as np
 from text_rec.text_rec import *
 import tensorflow as tf
+import requests
 
 app = Flask(__name__) 
+
+
+VQA_APP_URL = "http://127.0.0.1"
+VQA_APP_PORT = "2222"
+
 
 @app.route('/request',methods=["POST"])
 def req():
@@ -39,18 +45,25 @@ def home():
 
 
 def make_query_decisions(query,img,filename):
-    if check_messages_in(["what is it","what is this","what is in this","what am i seeing"],query) == True:
+    if check_messages_in(["caption this", "caption"],query) == True:
         # Generate Caption
         res = predict(filename)
         return res
     
-    elif check_messages_in(["read","read this","speak","tell","tell me"],query) == True:
+    elif check_messages_in(["read","read this"],query) == True:
         # generate text
         res = get_text(cv2.imread(filename))
         print(res)
         return " ".join(res.split('\n'))
 
-    else: return "Try again"
+    else: 
+        # make a call to the VQA App
+        files = {'image_file': open(filename, 'rb')}
+        res = requests.post(VQA_APP_PORT + VQA_APP_URL + "/predict", files = files, data = {"question": query} )
+        if res.text != "":
+            return res.text
+        else:
+            return "Unable to process"
 
 def check_messages_in(a,b):
     '''
